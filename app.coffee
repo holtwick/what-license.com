@@ -50,10 +50,13 @@ LICENSES = [
         ],
 
     ]
+    
+normalize_license_text = (text) -> text.replace /\s+/gi, " "
 
 for license in LICENSES
     $.get "licenses/#{ license[2] }.txt", (data) ->
-        license[2] = data
+        license[2] = normalize_license_text(data)
         console.log license
-    
-console.log LICENSES
+        
+window.check = -> 
+    console.log LICENSES
