@@ -1,5 +1,3 @@
-normalize_license_text = (txt) -> console.log txt
-
 COMMERCIAL_OK = 1
 
 LICENSES = [
