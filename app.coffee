@@ -51,7 +51,7 @@ LICENSES = [
 
     ]
 
-normalize_license_text = (text) -> text.replace(/\s+/gi, " ").replace(/[\.\:]/gi, "\n")
+normalize_license_text = (text) -> text.replace(/\s+/gi, " ").replace(/\./gi, ".\n")
     
 window.onload = ->
     window.all = []
@@ -73,7 +73,7 @@ window.check = ->
         d = document.getElementById('data').value
         result = []
     
-        console.log d
+        # console.log d
     
         if d
             dmp = new diff_match_patch()
@@ -84,7 +84,7 @@ window.check = ->
             for l in window.all
                 b = l[2]
 
-                diffs = dmp.diff_main(a, b) #, true, null)
+                diffs = dmp.diff_main(a, b, true)
 
                 dmp.diff_cleanupEfficiency(diffs)
 
@@ -93,11 +93,11 @@ window.check = ->
                 for item in diffs
                     if item[0] == DIFF_EQUAL 
                         mct += item[1].length 
-                        console.log "equal #{item[1]}"
+                        # console.log "equal #{item[1]}"
             
-                percent = (mct * 100.0 / a.length) 
+                percent = (mct * 100.0 / a.length)
                 
-                console.log "mct #{mct} % #{percent} a #{ a.length}" 
+                console.log "mct #{mct} % #{percent} a #{ a.length} #{l[0]} #{  (mct * 100.0 / a.length) }" 
 
                 diffhtml = dmp.diff_prettyHtml(diffs)                       
                 result.push([percent * 1.0, l,  diffhtml])
@@ -110,18 +110,18 @@ window.check = ->
             a = a[0] 
             b = b[0]
             if a<b then 1 else if a>b then -1 else 0) 
-        console.log result
+        # console.log result
     
         # Show result
     
         html = ""
-        c = 3
+        c = 0
         for r in result          
-            if r[0] < 20 or c < 1 then r[2] = "" 
-            c -= 1 
+            if (c > 0 and  r[0] < 20) or c > 2 then r[2] = "" 
+            c += 1 
         
             html += """
-             <li><a href="#{ r[1][1] }" target="_blank" title="Show full license" style="color:inherit; text-decoration"><strong>#{ r[1][0] }</strong> - #{ r[0] }% match into this license</a>
+             <li><a href="#{ r[1][1] }" target="_blank" title="Show full license" style="color:inherit; text-decoration"><strong>#{ r[1][0] }</strong> - #{ Math.round r[0] }% match into this license</a>
              """
              
             if 1 in r[1][3] 
@@ -173,6 +173,7 @@ window.check = ->
     #    c.d = d
     
     catch error
-        console.log error        
+        # console.log error        
+        false
         
     false
