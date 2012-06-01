@@ -79,16 +79,15 @@
             <textarea name="data" id="data" onfocus="this.style.height = '280px'; ovalue = this.value; this.value = ''" onblur="if(!this.value) this.value = ovalue">
             </textarea>
             <br>
-            <input type="submit" value="Check License" />
+            <input type="submit" value="Check License" id="button" />
           </p>
         </form>
-        <div id="result">
+        <div id="result" style="display:none">
             <br>
           <h3>
             Ranking of best matches
           </h3>
-          <ol>
-           
+          <ol id="list">           
           </ol>
         </div>
         <hr>

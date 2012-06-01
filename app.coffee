@@ -64,8 +64,12 @@ window.onload = ->
         
 window.check = -> 
     try
-        console.log window.all
-    
+        document.getElementById("result").style.display = "none"
+        
+        btn = document.getElementById("button")
+        btn.value = "Calculating..."
+        btn.enabled = false
+        
         d = document.getElementById('data').value
         result = []
     
@@ -152,8 +156,12 @@ window.check = ->
 
             html += "</li>"
 
-        console.log document.getElementById("result").innerHTML
-        document.getElementById("result").innerHTML = "" + html
+        document.getElementById("result").style.display = "block"
+        document.getElementById("list").innerHTML = html
+        
+        btn.value = "Check License"
+        btn.enabled = true
+        
       #  for x in result[1:3]:
       #      if x[0] < 20.:
       #          x[2] = None 
