@@ -51,12 +51,18 @@ LICENSES = [
 
     ]
     
-normalize_license_text = (text) -> text.replace /\s+/gi, " "
-
-for license in LICENSES
-    $.get "licenses/#{ license[2] }.txt", (data) ->
-        license[2] = normalize_license_text(data)
-        console.log license
+window.onload = ->
+    normalize_license_text = (text) -> text.replace /\s+/gi, " "
+  
+    window.all = []
+    for license in LICENSES
+        licenseCopy = license[..]
+        $.get "licenses/#{ license[2] }.txt", (data) ->
+            licenseCopy[2] = "xxx" # normalize_license_text(data)
+            window.all.append licenseCopy
         
 window.check = -> 
-    console.log LICENSES
+    console.log window.all
+    
+window.check()
+
