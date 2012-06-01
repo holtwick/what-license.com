@@ -50,19 +50,121 @@ LICENSES = [
         ],
 
     ]
+
+normalize_license_text = (text) -> text.replace(/\s+/gi, " ").replace(/[\.\:]/gi, "\n")
     
 window.onload = ->
-    normalize_license_text = (text) -> text.replace /\s+/gi, " "
-  
     window.all = []
     for license in LICENSES
         licenseCopy = license[..]
-        $.get "licenses/#{ license[2] }.txt", (data) ->
-            licenseCopy[2] = "xxx" # normalize_license_text(data)
-            window.all.append licenseCopy
+        txt = document.getElementById(license[2]).innerHTML
+        document.getElementById(license[2]).innerHTML = ""
+        licenseCopy[2] = normalize_license_text(txt)
+        window.all.push licenseCopy
         
 window.check = -> 
-    console.log window.all
+    try
+        console.log window.all
     
-window.check()
+        d = document.getElementById('data').value
+        result = []
+    
+        console.log d
+    
+        if d
+            dmp = new diff_match_patch()
+            dmp.Diff_EditCost = 4
+        
+            a = normalize_license_text(d)
+                      
+            for l in window.all
+                b = l[2]
 
+                diffs = dmp.diff_main(a, b) #, true, null)
+
+                dmp.diff_cleanupEfficiency(diffs)
+
+                mct = 0
+               #        console.log diffs
+                for item in diffs
+                    if item[0] == DIFF_EQUAL 
+                        mct += item[1].length 
+                        console.log "equal #{item[1]}"
+            
+                percent = (mct * 100.0 / a.length) 
+                
+                console.log "mct #{mct} % #{percent} a #{ a.length}" 
+
+                diffhtml = dmp.diff_prettyHtml(diffs)                       
+                result.push([percent * 1.0, l,  diffhtml])
+            
+                #c.match_count = mct
+        
+            #c.x = repr(diffs)
+    
+        result = result.sort((a,b) -> 
+            a = a[0] 
+            b = b[0]
+            if a<b then 1 else if a>b then -1 else 0) 
+        console.log result
+    
+        # Show result
+    
+        html = ""
+        c = 3
+        for r in result          
+            if r[0] < 20 or c < 1 then r[2] = "" 
+            c -= 1 
+        
+            html += """
+             <li><a href="#{ r[1][1] }" target="_blank" title="Show full license" style="color:inherit; text-decoration"><strong>#{ r[1][0] }</strong> - #{ r[0] }% match into this license</a>
+             """
+             
+            if 1 in r[1][3] 
+                 html += """
+                  <span class="ok">
+                    OK FOR USE IN COMMERCIAL PRODUCTS
+                  </span>
+                  """
+
+            if 1 not in r[1][3]
+                 html += """
+                   <span class="warn">
+                    BETTER DON'T USE IN COMMERCIAL PRODUCTS
+                  </span>
+                  """
+
+            if 2 in r[1][3]
+                 html += """
+                   <span class="warn">
+                    DON'T FORGET TO ATTRIBUTE THE AUTHOR
+                  </span>
+                  """
+            if r[2]
+                 html += """
+                  <div>
+                    <div style="font-size: 10px;">
+                    #{r[2]}
+                    </div>
+                    <br>
+                  </div>
+                  """
+
+            html += "</li>"
+
+        console.log document.getElementById("result").innerHTML
+        document.getElementById("result").innerHTML = "" + html
+      #  for x in result[1:3]:
+      #      if x[0] < 20.:
+      #          x[2] = None 
+    
+        #for x in result[3:]:
+        #    x[2] = None 
+     
+    #    c.result = result
+    #    c.d = d
+    
+    catch error
+        console.log error        
+        
+    false
