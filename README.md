@@ -1,10 +1,12 @@
 # Go to [what-license.com](http://www.what-license.com)
 
-> Ever wondered which Open Source license is used for a project? Most of them look very similar, but it might make a big difference to know the license's origin. Just paste the license and see what our tool is guessing.
+*Ever wondered which Open Source license is used for a project? Most of them look very similar, but it might make a big difference to know the license's origin. Just paste the license and see what our tool is guessing.*
 
----
 
-## Project's License
+
+.
+
+#### Project's License
 
 Copyright 2012 Dirk Holtwick
  
