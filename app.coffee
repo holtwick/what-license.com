@@ -7,8 +7,8 @@ LICENSES = [
         [COMMERCIAL_OK],
         ]
                 
-    ["BSD License", 
-        "http://www.opensource.org/licenses/bsd-license", 
+    ["BSD 3-Clause License", 
+        "http://opensource.org/licenses/BSD-3-Clause", 
         "BSD",
         [COMMERCIAL_OK],
         ],
