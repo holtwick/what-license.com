@@ -1,11 +1,17 @@
 COMMERCIAL_OK = 1
 
 LICENSES = [
+    ["Unlicense", 
+        "http://unlicense.org/", 
+        "Unlicense",
+        [COMMERCIAL_OK],
+        ],
+
     ["MIT License", 
         "http://www.opensource.org/licenses/mit-license", 
         "MIT",
         [COMMERCIAL_OK],
-        ]
+        ],
                 
     ["BSD 3-Clause License", 
         "http://opensource.org/licenses/BSD-3-Clause", 
